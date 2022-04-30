@@ -1,38 +1,94 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import data from "./data";
 const AppContext = React.createContext();
 
 const AppProvider = ({ children }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [level, setLevel] = useState(1);
   const [score, setScore] = useState(0);
+  const [bestScore, setBestScore] = useState(0);
   const [isGameOver, setIsGameOver] = useState(false);
-  const [isGameStarted, setIsGameStarted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [cards, setCards] = useState(data);
+  const [selectedCards, setSelectedCards] = useState([]);
+  const [gameCards, setGameCards] = useState([]);
 
-  // get 4 random cards from the data array
+  // get unique random cards from the data array
   const getRandomCards = () => {
     const randomCards = [];
-    for (let i = 0; i < 4; i++) {
-      const randomIndex = Math.floor(Math.random() * data.length);
-      randomCards.push(data[randomIndex]);
+    const cardsLength = cards.length;
+    const randomCardsLength = level * 5;
+    let randomCard;
+    while (randomCards.length < randomCardsLength) {
+      randomCard = cards[Math.floor(Math.random() * cardsLength)];
+      if (!randomCards.includes(randomCard)) {
+        randomCards.push(randomCard);
+      }
     }
-    return randomCards;
+    setGameCards(randomCards);
+  };
+  const handleCards = (id) => {
+    // store id of the clicked card
+    const selectedCard = gameCards.find((card) => card.id === id);
+    // check if the card is already selected
+    if (selectedCards.includes(selectedCard)) {
+      setIsGameOver(true);
+      return;
+    }
+    // add the selected card to the selected cards array
+    setSelectedCards([...selectedCards, selectedCard]);
+    setScore(score + 1);
+
+    if (selectedCards.length === level * 5 - 1) {
+      setLevel(level + 1);
+      setSelectedCards([]);
+    } else {
+      shuffleCards();
+    }
+  };
+  // set best score
+  if (score > bestScore) {
+    setBestScore(score);
+  }
+
+  const shuffleCards = () => {
+    // shuffle gameCards
+    setLoading(true);
+    const shuffledCards = gameCards.sort(() => Math.random() - 0.5);
+    setGameCards([...shuffledCards]);
+    setLoading(false);
   };
 
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
   const closeModal = () => {
-    setIsModalOpen(false);
+    setIsGameOver(false);
+    startNewGame();
   };
-
+  const startNewGame = () => {
+    setLevel(1);
+    setScore(0);
+    setSelectedCards([]);
+    getRandomCards();
+  };
+  useEffect(() => {
+    setLoading(true);
+    if (level === 11) {
+      setIsGameOver(true);
+    } else {
+      setTimeout(() => {
+        getRandomCards();
+      }, 100);
+    }
+    setLoading(false);
+  }, [level]);
   return (
     <AppContext.Provider
       value={{
-        isModalOpen,
-        openModal,
+        level,
+        loading,
+        isGameOver,
+        score,
+        bestScore,
+        handleCards,
+        gameCards,
         closeModal,
       }}
     >
