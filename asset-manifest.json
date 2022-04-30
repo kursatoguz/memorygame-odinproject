@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/memorygame-odinproject/static/css/main.6e72ba30.css",
+    "main.js": "/memorygame-odinproject/static/js/main.219b4aca.js",
+    "index.html": "/memorygame-odinproject/index.html",
+    "main.6e72ba30.css.map": "/memorygame-odinproject/static/css/main.6e72ba30.css.map",
+    "main.219b4aca.js.map": "/memorygame-odinproject/static/js/main.219b4aca.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.6e72ba30.css",
+    "static/js/main.219b4aca.js"
+  ]
+}
