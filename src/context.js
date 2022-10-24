@@ -7,7 +7,7 @@ const AppProvider = ({ children }) => {
   const [score, setScore] = useState(0);
   const [bestScore, setBestScore] = useState(0);
   const [isGameOver, setIsGameOver] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [cards, setCards] = useState(data);
   const [selectedCards, setSelectedCards] = useState([]);
   const [gameCards, setGameCards] = useState([]);
