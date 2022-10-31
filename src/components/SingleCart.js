@@ -1,10 +1,18 @@
 import React from "react";
 import { useGlobalContext } from "../context";
+import Loading from "./Loading";
 const SingleCart = ({ card }) => {
   const { handleCards } = useGlobalContext();
+  const [loadedImg, setLoadedImg] = React.useState(false);
   return (
     <div className="card" onClick={() => handleCards(card.id)}>
-      <img src={card.imageUrl} alt="Avatar" />
+      {loadedImg ? null : <Loading />}
+      <img
+        style={loadedImg ? {} : { display: "none" }}
+        src={card.imageUrl}
+        onLoad={() => setLoadedImg(true)}
+        alt="Avatar"
+      />
       <div className="container">
         <h4>
           <b>

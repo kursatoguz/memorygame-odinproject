@@ -1,5 +1,6 @@
 import React from "react";
 import SingleCard from "./SingleCart";
+import Loading from "./Loading";
 import { useGlobalContext } from "../context";
 
 const Cards = () => {
